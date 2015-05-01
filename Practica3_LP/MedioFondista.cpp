@@ -9,3 +9,4 @@ MedioFondista::MedioFondista()
 MedioFondista::~MedioFondista()
 {
 }
+

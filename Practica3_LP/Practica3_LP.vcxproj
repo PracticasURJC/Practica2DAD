@@ -69,6 +69,7 @@
     <ClInclude Include="MedioFondista.h" />
     <ClInclude Include="Prueba.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="URJCTeam.h" />
     <ClInclude Include="Velocista.h" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MedioFondista.cpp" />
     <ClCompile Include="Prueba.cpp" />
+    <ClCompile Include="URJCTeam.cpp" />
     <ClCompile Include="Velocista.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

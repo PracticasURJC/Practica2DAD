@@ -1,21 +1,9 @@
 #include "Atleta.h"
+#include "Prueba.h"
 
 Atleta::Atleta()
 {
-    _nombre = "";
-    _edad = 0;
-    _dineroBeca = 0;
-    m_atleta = this;
-    _registros.clear();
-}
 
-Atleta::Atleta(std::string nombre, int edad, int dineroBeca /*= 0*/)
-{
-    _nombre = nombre;
-    _edad = edad;
-    _dineroBeca = dineroBeca;
-    m_atleta = this;
-    _registros.clear();
 }
 
 Atleta::~Atleta()
@@ -23,12 +11,29 @@ Atleta::~Atleta()
 
 }
 
-Atleta* Atleta::crearNuevoAtleta(std::string nombre, int edad, int dineroBeca /*= 0*/)
+MultimapRegistrosAtleta Atleta::addRegistroPrueba(RegistroPrueba registro, Prueba* prueba)
 {
-    Atleta* atleta = new Atleta(nombre, edad, dineroBeca);
-    return atleta;
+    _registros.insert(std::pair<RegistroPrueba, SubTipoPrueba>(registro, prueba->getSubTipoPrueba()));
+
+    prueba->addNuevaMarca(registro, m_atleta);
+
+    return _registros;
 }
 
-std::vector<RegistroPrueba> Atleta::addRegistroPrueba(RegistroPrueba const registro)
+void Atleta::mostrarRegistros()
 {
+    std::cout << "Registros para el atleta con nombre " << m_atleta->getNombreAtleta() << std::endl;
+    for (auto& it : _registros)
+        std::cout << it.first.toString() << " => " << Prueba::getNombreSubTipoPrueba(it.second) << std::endl;
+}
+
+std::string Atleta::toString() const
+{
+    std::ostringstream str;
+    str << _nombre;
+    if (_edad < 10)
+        str << "0";
+    str << ", Edad: " << _edad;
+    str << ", Beca: " << _dineroBeca;
+    return str.str();
 }

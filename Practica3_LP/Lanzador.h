@@ -7,5 +7,8 @@ class Lanzador :
 public:
     Lanzador();
     ~Lanzador();
+
+    void incrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() + BONUS_BECA_LANZADOR); }
+    void decrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() - BONUS_BECA_LANZADOR); }
 };
 
