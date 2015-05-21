@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Prueba.h"
+#include "URJCTeam.h"
 
 #include <string>
 #include <map>
@@ -8,6 +9,7 @@
 #include <sstream>
 
 class Prueba;
+class URJCTeam;
 enum TipoPrueba;
 enum SubTipoPrueba;
 
@@ -25,6 +27,23 @@ struct Fecha
     int _ano;
 
     Fecha(int dia = 0, int mes = 0, int ano = 0) { _dia = dia; _mes = mes; _ano = ano; };
+    
+    bool operator>(const Fecha t) const
+    {
+        if (this->_ano > t._ano)
+            return true;
+        else if (this->_ano == t._ano && this->_mes > t._mes)
+            return true;
+        else if (this->_ano == t._ano && this->_mes == t._mes &&  this->_dia > t._dia)
+            return true;
+        else
+            return false;
+    }
+
+    bool operator<(const Fecha t) const
+    {
+        return !(*this > t);
+    }
 
     std::string toString() const
     {
@@ -106,24 +125,12 @@ struct RegistroPrueba
     
     bool operator>(const RegistroPrueba t) const
     {
-        if (this->_resultado > t._resultado)
-            return true;
-        else if (this->_resultado == t._resultado && this->_resultado > t._resultado)
-            return true;
-        else if (this->_resultado == t._resultado && this->_resultado == t._resultado &&  this->_resultado > t._resultado)
-            return true;
-        else
-            return false;
+        return (this->_resultado > t._resultado || (this->_resultado == t._resultado && this->_fecha < t._fecha));
     }
     
     bool operator<(const RegistroPrueba t) const
     {
         return !(*this > t);
-    }
-
-    bool operator() (const RegistroPrueba& r1, const RegistroPrueba& r2) const
-    {
-        return (r1._resultado < r2._resultado);
     }
 };
 
@@ -147,6 +154,9 @@ public:
     int getDineroBecaAtleta() const { return _dineroBeca; }
     void setDineroBecaAtleta(int bineroBeca) { _dineroBeca = bineroBeca; }
 
+    URJCTeam* getTeam() const { return _team; }
+    void setTeam(URJCTeam* team) { _team = team; }
+
     MultimapRegistrosAtleta getRegistrosAtleta() const { return _registros; }
 
     MultimapRegistrosAtleta addRegistroPrueba(RegistroPrueba registro, Prueba* prueba);
@@ -166,5 +176,6 @@ protected:
     int _edad;
     int _dineroBeca;
     MultimapRegistrosAtleta _registros;
+    URJCTeam* _team;
 };
 

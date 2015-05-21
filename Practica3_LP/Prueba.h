@@ -7,14 +7,14 @@
 class Atleta;
 struct RegistroPrueba;
 
-enum TipoPrueba:int
+enum TipoPrueba
 {
     TIPO_VELOCISTA                      = 0,
     TIPO_MEDIOFONDISTA,
     TIPO_LANZADOR
 };
 
-enum SubTipoPrueba:int
+enum SubTipoPrueba
 {
     SUBTIPO_VELOCISTA_100M_LISOS        = 0,
     SUBTIPO_VELOCISTA_110M_VALLAS,
@@ -30,7 +30,9 @@ enum SubTipoPrueba:int
     SUBTIPO_LANZADOR_PESO,
     SUBTIPO_LANZADOR_MARTILLO,
     SUBTIPO_LANZADOR_JABALINA,
-    SUBTIPO_LANZADOR_DISCO
+    SUBTIPO_LANZADOR_DISCO,
+
+    MAX_TIPOS_PRUEBAS
 };
 
 typedef std::multimap<RegistroPrueba, Atleta*> MultimapRegistrosPrueba;
