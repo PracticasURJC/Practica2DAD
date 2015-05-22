@@ -103,16 +103,17 @@ Prueba::MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, A
             // Si el nuevo plusmarquista es un atleta distinto al anterior, modificamos las becas.
             if (becado != atleta)
             {
-                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << ": " << atleta->getDineroBecaAtleta() << std::endl;
+                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << atleta->getNombreAtleta() << ": " << atleta->getDineroBecaAtleta() << std::endl;
                 if (becado && registro._resultado < becado->getPlusmarca(registro._prueba))
                 {
                     atleta->getTeam()->nuevaPlusmarca(registro, atleta);
                     atleta->incrementarBeca();
                     becado->decrementarBeca();
                 }
-                else
+                else if (!becado)
                     atleta->incrementarBeca();
-                std::cout << "Beca becado: " << becado->getDineroBecaAtleta() << "Beca Atleta: " << atleta->getDineroBecaAtleta() << std::endl;
+
+                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << atleta->getNombreAtleta() << ": " << atleta->getDineroBecaAtleta() << std::endl;
             }
         }
     }
