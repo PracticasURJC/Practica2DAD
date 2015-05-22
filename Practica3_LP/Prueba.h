@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef PRUEBA_H
+#define PRUEBA_H
+
 #include "Atleta.h"
 #include <map>
 #include <iostream>
@@ -35,11 +38,13 @@ enum SubTipoPrueba
     MAX_TIPOS_PRUEBAS
 };
 
-typedef std::multimap<RegistroPrueba, Atleta*> MultimapRegistrosPrueba;
 
 class Prueba
 {
 public:
+
+    typedef std::multimap<RegistroPrueba, Atleta*> MultimapRegistrosPrueba;
+
     Prueba();
     Prueba(TipoPrueba tipo, SubTipoPrueba subTipo);
     ~Prueba();
@@ -57,13 +62,16 @@ public:
 
     MultimapRegistrosPrueba addNuevaMarca(RegistroPrueba registro, Atleta* atleta);
 
+    MultimapRegistrosPrueba getMarcas() const { return _marcas; }
+
     void mostrarMarcasPrueba();
+    MultimapRegistrosPrueba _marcas;
 
 private:
-    MultimapRegistrosPrueba _marcas;
     TipoPrueba _tipo;
     SubTipoPrueba _subTipo;
 
     Prueba* m_prueba;
 };
 
+#endif

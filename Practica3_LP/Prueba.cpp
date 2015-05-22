@@ -74,7 +74,7 @@ std::string Prueba::getNombreSubTipoPrueba(SubTipoPrueba subTipo)
     return "UNKNOWN";
 }
 
-MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, Atleta* atleta)
+Prueba::MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, Atleta* atleta)
 {
     if (!atleta)
     {
@@ -86,18 +86,34 @@ MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, Atleta* a
     if (_marcas.empty())
     {
         _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
-        atleta->incrementarBeca();
+
+        if (atleta->getTeam())
+        {
+            atleta->getTeam()->nuevaPlusmarca(registro, atleta);
+            atleta->incrementarBeca();
+        }
     }
     else
     {
-        MultimapRegistrosPrueba::const_iterator oldItr = _marcas.begin();
-        MultimapRegistrosPrueba::const_iterator newItr = _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
-
-        // Si el nuevo plusmarquista es un atleta distinto al anterior, modificamos las becas.
-        if (newItr->second != oldItr->second)
+        _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
+        
+        if (atleta->getTeam())
         {
-            newItr->second->incrementarBeca();
-            oldItr->second->decrementarBeca();
+            Atleta* becado = atleta->getTeam()->getBecadoPrueba(registro._prueba->getSubTipoPrueba());
+            // Si el nuevo plusmarquista es un atleta distinto al anterior, modificamos las becas.
+            if (becado != atleta)
+            {
+                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << ": " << atleta->getDineroBecaAtleta() << std::endl;
+                if (becado && registro._resultado < becado->getPlusmarca(registro._prueba))
+                {
+                    atleta->getTeam()->nuevaPlusmarca(registro, atleta);
+                    atleta->incrementarBeca();
+                    becado->decrementarBeca();
+                }
+                else
+                    atleta->incrementarBeca();
+                std::cout << "Beca becado: " << becado->getDineroBecaAtleta() << "Beca Atleta: " << atleta->getDineroBecaAtleta() << std::endl;
+            }
         }
     }
     return _marcas;
@@ -106,6 +122,6 @@ MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, Atleta* a
 void Prueba::mostrarMarcasPrueba()
 {
     std::cout << "Registro de marcas para la prueba " << Prueba::getNombreTipoPrueba(m_prueba->getTipoPrueba()) << std::endl;
-    for(auto& marca : _marcas)
-        std::cout << marca.first.toString() << " => " << marca.second->getNombreAtleta() << std::endl;
+    for(Prueba::MultimapRegistrosPrueba::const_iterator itr = _marcas.begin(); itr != _marcas.end(); ++itr)
+        std::cout << (*itr).first.toString() << " => " << (*itr).second->getNombreAtleta() << std::endl;
 }

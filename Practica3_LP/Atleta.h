@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef ATLETA_H
+#define ATLETA_H
+
 #include "Prueba.h"
 #include "URJCTeam.h"
 
@@ -7,17 +10,19 @@
 #include <map>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
-class Prueba;
 class URJCTeam;
+class Prueba;
+
 enum TipoPrueba;
 enum SubTipoPrueba;
 
-enum BonusBecas:int
+enum BonusBecas
 {
-    BONUS_BECA_VELOCISTA        = 700,
-    BONUS_BECA_MEDIOFONDISTA    = 500,
-    BONUS_BECA_LANZADOR         = 250
+    BONUS_BECA_VELOCISTA        = 700u,
+    BONUS_BECA_MEDIOFONDISTA    = 500u,
+    BONUS_BECA_LANZADOR         = 250u
 };
 
 struct Fecha
@@ -89,6 +94,11 @@ struct TiempoRegistro
         return (_min == t._min && _sec == t._sec && _milli == t._milli);
     }
 
+    bool operator!=(const TiempoRegistro t) const
+    {
+        return !(*this == t);
+    }
+
     bool operator() (const TiempoRegistro& t1, const TiempoRegistro& t2) const
     {
         return (t1 < t2);
@@ -113,16 +123,12 @@ struct RegistroPrueba
     Fecha _fecha;
     std::string _lugar;
     TiempoRegistro _resultado;
+    Prueba* _prueba;
 
-    RegistroPrueba(Fecha fecha, std::string lugar, TiempoRegistro resultado) { _fecha = fecha; _lugar = lugar; _resultado = resultado; };
+    RegistroPrueba(Fecha fecha, std::string lugar, TiempoRegistro resultado, Prueba* prueba) { _fecha = fecha; _lugar = lugar; _resultado = resultado; _prueba = prueba; };
 
-    std::string toString() const
-    {
-        std::ostringstream str;
-        str << "Fecha: " << _fecha.toString() << ", Tiempo: " << _resultado.toString() << ", Lugar: " << _lugar;
-        return str.str();
-    }
-    
+    std::string toString() const;
+
     bool operator>(const RegistroPrueba t) const
     {
         return (this->_resultado > t._resultado || (this->_resultado == t._resultado && this->_fecha < t._fecha));
@@ -134,13 +140,12 @@ struct RegistroPrueba
     }
 };
 
-typedef std::multimap<RegistroPrueba, SubTipoPrueba> MultimapRegistrosAtleta;
-
 #define PARTE_FIJA_BECA 500
 
 class Atleta
 {
 public:
+    typedef std::vector<RegistroPrueba> VectorRegistros;
 
     Atleta();
     virtual ~Atleta();
@@ -155,11 +160,15 @@ public:
     void setDineroBecaAtleta(int bineroBeca) { _dineroBeca = bineroBeca; }
 
     URJCTeam* getTeam() const { return _team; }
-    void setTeam(URJCTeam* team) { _team = team; }
+    void setTeam(URJCTeam* team);
 
-    MultimapRegistrosAtleta getRegistrosAtleta() const { return _registros; }
+    VectorRegistros getRegistrosAtleta() const { return _registros; }
 
-    MultimapRegistrosAtleta addRegistroPrueba(RegistroPrueba registro, Prueba* prueba);
+    VectorRegistros addRegistroPrueba(RegistroPrueba registro, Prueba* prueba);
+
+    TiempoRegistro getPlusmarca(Prueba* prueba);
+
+    bool hasPlusmarca(Prueba* prueba) { return getPlusmarca(prueba) != 0; }
 
     virtual void incrementarBeca() = 0;
     virtual void decrementarBeca() = 0;
@@ -175,7 +184,8 @@ protected:
     std::string _nombre;
     int _edad;
     int _dineroBeca;
-    MultimapRegistrosAtleta _registros;
+    VectorRegistros _registros;
     URJCTeam* _team;
 };
 
+#endif
