@@ -18,11 +18,11 @@ Velocista::Velocista(std::string nombre, int edad, URJCTeam* team, int dineroBec
     _edad = edad;
     _dineroBeca = dineroBeca;
     _team = team;
-    _team->addNuevoIntegrante(m_atleta);
+    _team->AddNuevoIntegrante(m_atleta);
     _registros.clear();
 }
 
-Velocista* Velocista::crearNuevoVelocista(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
+Velocista* Velocista::CrearNuevoVelocista(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
 {
     return new Velocista(nombre, edad, team, dineroBeca);
 }

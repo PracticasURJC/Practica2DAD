@@ -50,7 +50,7 @@ struct Fecha
         return !(*this > t);
     }
 
-    std::string toString() const
+    std::string ToString() const
     {
         std::ostringstream str;
         if (_dia < 10)
@@ -104,7 +104,7 @@ struct TiempoRegistro
         return (t1 < t2);
     }
 
-    std::string toString() const
+    std::string ToString() const
     {
         std::ostringstream str;
         str << _min << "'";
@@ -127,7 +127,7 @@ struct RegistroPrueba
 
     RegistroPrueba(Fecha fecha, std::string lugar, TiempoRegistro resultado, Prueba* prueba) { _fecha = fecha; _lugar = lugar; _resultado = resultado; _prueba = prueba; };
 
-    std::string toString() const;
+    std::string ToString() const;
 
     bool operator>(const RegistroPrueba t) const
     {
@@ -150,32 +150,34 @@ public:
     Atleta();
     virtual ~Atleta();
 
-    std::string getNombreAtleta() const { return _nombre; }
-    void setNombreAtleta(std::string nombre) { _nombre = nombre; }
+    std::string GetNombreAtleta() const { return _nombre; }
+    void SetNombreAtleta(std::string nombre) { _nombre = nombre; }
 
-    int getEdadAtleta() const { return _edad; }
-    void setEdadAtleta(int edad) { _edad = edad; }
+    int GetEdadAtleta() const { return _edad; }
+    void SetEdadAtleta(int edad) { _edad = edad; }
 
-    int getDineroBecaAtleta() const { return _dineroBeca; }
-    void setDineroBecaAtleta(int bineroBeca) { _dineroBeca = bineroBeca; }
+    int GetDineroBecaAtleta() const { return _dineroBeca; }
+    void SetDineroBecaAtleta(int bineroBeca) { _dineroBeca = bineroBeca; }
 
-    URJCTeam* getTeam() const { return _team; }
-    void setTeam(URJCTeam* team);
+    URJCTeam* GetTeam() const { return _team; }
+    void SetTeam(URJCTeam* team);
 
-    VectorRegistros getRegistrosAtleta() const { return _registros; }
+    VectorRegistros GetRegistrosAtleta() const { return _registros; }
 
-    VectorRegistros addRegistroPrueba(RegistroPrueba registro, Prueba* prueba);
+    VectorRegistros AddRegistroPrueba(RegistroPrueba registro);
+    
+    TiempoRegistro GetPlusmarca(SubTipoPrueba subTipo);
+    TiempoRegistro GetPlusmarca(Prueba* prueba);
 
-    TiempoRegistro getPlusmarca(Prueba* prueba);
+    bool HasPlusmarca(Prueba* prueba) { return GetPlusmarca(prueba) != TiempoRegistro(); }
+    bool HasPlusmarca(SubTipoPrueba subTipo) { return GetPlusmarca(subTipo) != TiempoRegistro(); }
 
-    bool hasPlusmarca(Prueba* prueba) { return getPlusmarca(prueba) != 0; }
+    virtual void IncrementarBeca() = 0;
+    virtual void DecrementarBeca() = 0;
 
-    virtual void incrementarBeca() = 0;
-    virtual void decrementarBeca() = 0;
+    std::string ToString() const;
 
-    std::string toString() const;
-
-    void mostrarRegistros();
+    void MostrarRegistros();
 
 protected:
 

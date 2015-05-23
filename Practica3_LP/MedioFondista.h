@@ -13,10 +13,10 @@ public:
     MedioFondista(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
     ~MedioFondista();
 
-    static MedioFondista* crearNuevoMedioFondista(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
+    static MedioFondista* CrearNuevoMedioFondista(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
     
-    void incrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() + BONUS_BECA_MEDIOFONDISTA); }
-    void decrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() - BONUS_BECA_MEDIOFONDISTA); }
+    void IncrementarBeca() { SetDineroBecaAtleta(GetDineroBecaAtleta() + BONUS_BECA_MEDIOFONDISTA); }
+    void DecrementarBeca() { SetDineroBecaAtleta(GetDineroBecaAtleta() - BONUS_BECA_MEDIOFONDISTA); }
 };
 
 #endif

@@ -49,22 +49,22 @@ public:
     Prueba(TipoPrueba tipo, SubTipoPrueba subTipo);
     ~Prueba();
 
-    static Prueba* crearNuevaPrueba(TipoPrueba tipo, SubTipoPrueba subTipo);
+    static Prueba* CrearNuevaPrueba(TipoPrueba tipo, SubTipoPrueba subTipo);
 
-    static std::string getNombreTipoPrueba(TipoPrueba tipo);
-    static std::string getNombreSubTipoPrueba(SubTipoPrueba subTipo);
+    static std::string GetNombreTipoPrueba(TipoPrueba tipo);
+    static std::string GetNombreSubTipoPrueba(SubTipoPrueba subTipo);
 
-    TipoPrueba getTipoPrueba() const { return _tipo; }
-    void setTipoPrueba(TipoPrueba tipo) { _tipo = tipo; }
+    TipoPrueba GetTipoPrueba() const { return _tipo; }
+    void SetTipoPrueba(TipoPrueba tipo) { _tipo = tipo; }
 
-    SubTipoPrueba getSubTipoPrueba() const { return _subTipo; }
-    void setSubTipoPrueba(SubTipoPrueba subTipo) { _subTipo = subTipo; }
+    SubTipoPrueba GetSubTipoPrueba() const { return _subTipo; }
+    void SetSubTipoPrueba(SubTipoPrueba subTipo) { _subTipo = subTipo; }
 
-    MultimapRegistrosPrueba addNuevaMarca(RegistroPrueba registro, Atleta* atleta);
+    MultimapRegistrosPrueba AddNuevaMarca(RegistroPrueba registro, Atleta* atleta);
 
-    MultimapRegistrosPrueba getMarcas() const { return _marcas; }
+    MultimapRegistrosPrueba GetMarcas() const { return _marcas; }
 
-    void mostrarMarcasPrueba();
+    void MostrarMarcasPrueba();
     MultimapRegistrosPrueba _marcas;
 
 private:

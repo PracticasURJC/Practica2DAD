@@ -21,7 +21,7 @@ MedioFondista::MedioFondista(std::string nombre, int edad, URJCTeam* team, int d
     _registros.clear();
 }
 
-MedioFondista* MedioFondista::crearNuevoMedioFondista(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
+MedioFondista* MedioFondista::CrearNuevoMedioFondista(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
 {
     return new MedioFondista(nombre, edad, team, dineroBeca);
 }
@@ -29,4 +29,3 @@ MedioFondista* MedioFondista::crearNuevoMedioFondista(std::string nombre, int ed
 MedioFondista::~MedioFondista()
 {
 }
-

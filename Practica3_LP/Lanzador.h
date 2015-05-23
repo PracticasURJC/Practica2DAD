@@ -13,10 +13,10 @@ public:
     Lanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
     ~Lanzador();
 
-    static Lanzador* crearNuevoLanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
+    static Lanzador* CrearNuevoLanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca = PARTE_FIJA_BECA);
 
-    void incrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() + BONUS_BECA_LANZADOR); }
-    void decrementarBeca() { setDineroBecaAtleta(getDineroBecaAtleta() - BONUS_BECA_LANZADOR); }
+    void IncrementarBeca() { SetDineroBecaAtleta(GetDineroBecaAtleta() + BONUS_BECA_LANZADOR); }
+    void DecrementarBeca() { SetDineroBecaAtleta(GetDineroBecaAtleta() - BONUS_BECA_LANZADOR); }
 };
 
 #endif

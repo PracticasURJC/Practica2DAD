@@ -20,13 +20,12 @@ Prueba::~Prueba()
 {
 }
 
-Prueba* Prueba::crearNuevaPrueba(TipoPrueba tipo, SubTipoPrueba subTipo)
+Prueba* Prueba::CrearNuevaPrueba(TipoPrueba tipo, SubTipoPrueba subTipo)
 {
-    Prueba *prueba = new Prueba(tipo, subTipo);
-    return prueba;
+    return new Prueba(tipo, subTipo);
 }
 
-std::string Prueba::getNombreTipoPrueba(TipoPrueba tipo)
+std::string Prueba::GetNombreTipoPrueba(TipoPrueba tipo)
 {
     switch(tipo)
     {
@@ -40,7 +39,7 @@ std::string Prueba::getNombreTipoPrueba(TipoPrueba tipo)
     return "UNKNOWN";
 }
 
-std::string Prueba::getNombreSubTipoPrueba(SubTipoPrueba subTipo)
+std::string Prueba::GetNombreSubTipoPrueba(SubTipoPrueba subTipo)
 {
     switch(subTipo)
     {
@@ -74,55 +73,61 @@ std::string Prueba::getNombreSubTipoPrueba(SubTipoPrueba subTipo)
     return "UNKNOWN";
 }
 
-Prueba::MultimapRegistrosPrueba Prueba::addNuevaMarca(RegistroPrueba registro, Atleta* atleta)
+Prueba::MultimapRegistrosPrueba Prueba::AddNuevaMarca(RegistroPrueba registro, Atleta* atleta)
 {
     if (!atleta)
     {
-        std::cout << "Atleta no encontrado (NULL)" << std::endl;
+        std::cout << "ERROR: Atleta no definido." << std::endl;
         return _marcas;
     }
 
-    // En caso de estar vacio el registro de atletas, el primero que tenga una marca ganara el bonus de beca.
-    if (_marcas.empty())
-    {
-        _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
+    _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
 
-        if (atleta->getTeam())
-        {
-            atleta->getTeam()->nuevaPlusmarca(registro, atleta);
-            atleta->incrementarBeca();
-        }
-    }
-    else
+    if (atleta->GetTeam())
     {
-        _marcas.insert(std::pair<RegistroPrueba, Atleta*>(registro, atleta));
+        Atleta* becado = atleta->GetTeam()->GetBecadoPrueba(registro._prueba->GetSubTipoPrueba());
         
-        if (atleta->getTeam())
+        // Si existe becado lo usamos para comprar marcas, en caso de que no exista, añadimos la plusmarca directamente y la beca
+        if (becado)
         {
-            Atleta* becado = atleta->getTeam()->getBecadoPrueba(registro._prueba->getSubTipoPrueba());
             // Si el nuevo plusmarquista es un atleta distinto al anterior, modificamos las becas.
             if (becado != atleta)
             {
-                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << atleta->getNombreAtleta() << ": " << atleta->getDineroBecaAtleta() << std::endl;
-                if (becado && registro._resultado < becado->getPlusmarca(registro._prueba))
+                if (registro._resultado < becado->GetPlusmarca(registro._prueba))
                 {
-                    atleta->getTeam()->nuevaPlusmarca(registro, atleta);
-                    atleta->incrementarBeca();
-                    becado->decrementarBeca();
+                    atleta->GetTeam()->NuevaPlusmarca(registro, atleta);
+                    atleta->IncrementarBeca();
+                    becado->DecrementarBeca();
+                    std::cout << "Aumentada beca de " << atleta->GetNombreAtleta() << ", disminuida beca de " << becado->GetNombreAtleta() << std::endl;
                 }
-                else if (!becado)
-                    atleta->incrementarBeca();
-
-                std::cout << "Beca " << becado->getNombreAtleta() << ": " << becado->getDineroBecaAtleta() << "Beca " << atleta->getNombreAtleta() << ": " << atleta->getDineroBecaAtleta() << std::endl;
+            }
+            // En caso de que sea el mismo plusmarquista (mejora de marca), actualizamos la marca pero no aumentamos la beca
+            else if (registro._resultado < atleta->GetPlusmarca(registro._prueba))
+            {
+                atleta->GetTeam()->NuevaPlusmarca(registro, atleta);
+                std::cout << "Actualizada marca de " << atleta->GetNombreAtleta() << std::endl;
             }
         }
+        else
+        {
+            atleta->GetTeam()->NuevaPlusmarca(registro, atleta);
+            atleta->IncrementarBeca();
+            std::cout << "Aumentada beca de " << atleta->GetNombreAtleta() << std::endl;
+        }
     }
+    else
+        std::cout << "ERROR: Intentando añadir una marca a un atleta sin equipo." << std::endl;
+
     return _marcas;
 }
 
-void Prueba::mostrarMarcasPrueba()
+void Prueba::MostrarMarcasPrueba()
 {
-    std::cout << "Registro de marcas para la prueba " << Prueba::getNombreTipoPrueba(m_prueba->getTipoPrueba()) << std::endl;
-    for(Prueba::MultimapRegistrosPrueba::const_iterator itr = _marcas.begin(); itr != _marcas.end(); ++itr)
-        std::cout << (*itr).first.toString() << " => " << (*itr).second->getNombreAtleta() << std::endl;
+    std::cout << "----------------------------------" << std::endl;
+    std::cout << "Registro de marcas para la prueba " << Prueba::GetNombreTipoPrueba(m_prueba->GetTipoPrueba()) << std::endl;
+    if (_marcas.empty())
+        std::cout << "No hay marcas para la prueba " << Prueba::GetNombreTipoPrueba(m_prueba->GetTipoPrueba()) << " Subtipo " << Prueba::GetNombreSubTipoPrueba(m_prueba->GetSubTipoPrueba()) << std::endl;
+    else
+        for(Prueba::MultimapRegistrosPrueba::const_iterator itr = _marcas.begin(); itr != _marcas.end(); ++itr)
+            std::cout << (*itr).first.ToString() << " => " << (*itr).second->GetNombreAtleta() << std::endl;
 }

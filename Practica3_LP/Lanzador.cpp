@@ -15,7 +15,7 @@ Lanzador::Lanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
     _registros.clear();
 }
 
-Lanzador* Lanzador::crearNuevoLanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
+Lanzador* Lanzador::CrearNuevoLanzador(std::string nombre, int edad, URJCTeam* team, int dineroBeca)
 {
     return new Lanzador(nombre, edad, team, dineroBeca);
 }

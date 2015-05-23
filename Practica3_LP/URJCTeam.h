@@ -23,16 +23,18 @@ public:
     URJCTeam(std::string nombre);
     ~URJCTeam();
 
-    static URJCTeam* crearNuevoTeam(std::string nombre);
+    static URJCTeam* CrearNuevoTeam(std::string nombre);
 
-    VectorAtletas addNuevoIntegrante(Atleta* atleta) { _atletas.push_back(atleta); return _atletas; }
-    VectorAtletas eliminarIntegrante(Atleta* atleta);
+    VectorAtletas AddNuevoIntegrante(Atleta* atleta);
+    VectorAtletas EliminarIntegrante(Atleta* atleta);
 
-    void nuevaPlusmarca(RegistroPrueba prueba, Atleta* atleta);
+    void NuevaPlusmarca(RegistroPrueba prueba, Atleta* atleta);
 
-    void mostrarIntegrantes();
+    void MostrarIntegrantes();
 
-    Atleta* getBecadoPrueba(SubTipoPrueba subTipo);
+    Atleta* GetBecadoPrueba(SubTipoPrueba subTipo);
+
+    void RecalcularBecados();
 
 private:
     URJCTeam* m_team;
